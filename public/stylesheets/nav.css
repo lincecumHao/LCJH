@@ -1,0 +1,25 @@
+.nav {
+    z-index: 10;
+    position: fixed;
+    right: 0;
+    margin: 20px 20px 20px 20px;
+}
+
+.nav ul li {
+    list-style-type: none;
+}
+
+.nav ul li a {
+    font-family: "Noto Sans TC", sans-serif;
+    font-size: 36px;
+}
+
+.nav ul li a:hover {
+	cursor: pointer;
+    color: #fff;
+    text-shadow: 0 0 50px #000;
+}
+
+.active {
+    color: #fff;
+}
