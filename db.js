@@ -1,6 +1,6 @@
 var mongoose = require( 'mongoose' );
 var Schema   = mongoose.Schema;
- 
+  
 var association = new Schema({
     id: String,
     name: String,
@@ -12,8 +12,14 @@ var association = new Schema({
     available: Boolean
 }, { collection: 'Associations' });
 
-mongoose.model( 'Association', association );
+var student = new Schema({
+    "id": String,
+    "name": String,
+    "volunteer_program": Array
+}, { collection: 'Student' });
 
+mongoose.model( 'Association', association );
+mongoose.model( 'Student', student );
 mongoose.connect( 'mongodb://lcjh_admin:Q7PxDuK4gc4OZ0Z1gBlg@ds055485.mongolab.com:55485/lcjh', function(err) {
     if (err) throw err;
 } );

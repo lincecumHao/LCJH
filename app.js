@@ -9,7 +9,6 @@ var mongoDb = require('./db');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var students = require('./routes/fileupload');
-
 var associations = require('./routes/associations');
 
 var app = express();

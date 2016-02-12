@@ -43,3 +43,7 @@ h1 .font {
 .result {
     background-image: url("../images/result.jpg");
 }
+
+input[type=file]{
+    margin: auto;
+}
