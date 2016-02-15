@@ -29425,8 +29425,68 @@ var associationForm = React.createClass({displayName: "associationForm",
 
 	getInitialState: function() {
 		return {
-			association:{} 
+			name: "",
+			teacherName: "",
+			classRoom: "",
+			maxStudentCap: 0,
+			classRoomWhenRain: "",
+			common: ""
 		};
+	},
+
+	componentWillReceiveProps: function(nextProps) {
+		if(nextProps.association.name){
+			var association = nextProps.association;
+			this.setState({
+				name: association.name,
+				teacherName: association.teacherName,
+				classRoom: association.classRoom,
+				maxStudentCap: association.maxStudentCap,
+				classRoomWhenRain: association.classRoomWhenRain,
+				common: association.common
+			});
+		}
+	},
+
+	_handleNameChange: function(e){
+		this.setState({
+			name: e.target.value
+		});
+	},
+
+	_handleTeacherNameChange: function(e){
+		this.setState({
+			teacherName: e.target.value
+		});
+	},
+
+	_handleClassRoomChange: function(e){
+		this.setState({
+			classRoom: e.target.value
+		});
+	},
+
+	_handleMaxStudentCapChange: function(e){
+		this.setState({
+			maxStudentCap: e.target.value
+		});
+	},
+
+	_handleClassRoomWhenRainChange: function(e){
+		this.setState({
+			classRoomWhenRain: e.target.value
+		});
+	},
+
+	_handleCommonChange: function(e){
+		this.setState({
+			common: e.target.value
+		});
+	},
+
+	_handleEdit: function(e){
+		console.log(this.state);
+		e.preventDefault();
 	},
 
 	render: function() {
@@ -29434,29 +29494,29 @@ var associationForm = React.createClass({displayName: "associationForm",
 			React.createElement("form", null, 
 				React.createElement("div", {className: "form-group"}, 
 					React.createElement("label", null, "社團名稱"), 
-					React.createElement("input", {type: "text", className: "form-control", value: this.props.association.name})
+					React.createElement("input", {type: "text", className: "form-control", value: this.state.name, onChange: this._handleNameChange})
 				), 
 				React.createElement("div", {className: "form-group"}, 
 					React.createElement("label", null, "教師"), 
-					React.createElement("input", {type: "text", className: "form-control", value: this.props.association.teacherName})
+					React.createElement("input", {type: "text", className: "form-control", value: this.state.teacherName, onChange: this._handleTeacherNameChange})
 				), 
 				React.createElement("div", {className: "form-group"}, 
 					React.createElement("label", null, "上課場地"), 
-					React.createElement("input", {type: "text", className: "form-control", value: this.props.association.classRoom})
+					React.createElement("input", {type: "text", className: "form-control", value: this.state.classRoom, onChange: this._handleClassRoomChange})
 				), 
 				React.createElement("div", {className: "form-group"}, 
 					React.createElement("label", null, "上課人數"), 
-					React.createElement("input", {type: "number", className: "form-control", value: this.props.association.maxStudentCap})
+					React.createElement("input", {type: "number", className: "form-control", value: this.state.maxStudentCap, onChange: this._handleMaxStudentCapChange})
 				), 
 				React.createElement("div", {className: "form-group"}, 
 					React.createElement("label", null, "雨天場地"), 
-					React.createElement("input", {type: "text", className: "form-control", value: this.props.association.classRoomWhenRain})
+					React.createElement("input", {type: "text", className: "form-control", value: this.state.classRoomWhenRain, onChange: this._handleClassRoomWhenRainChange})
 				), 
 				React.createElement("div", {className: "form-group"}, 
 					React.createElement("label", null, "備註"), 
-					React.createElement("textarea", {className: "form-control", rows: "3", value: this.props.association.common})
+					React.createElement("textarea", {className: "form-control", rows: "3", value: this.state.common, onChange: this._handleCommonChange})
 				), 
-				React.createElement("button", {type: "submit", className: "btn btn-success"}, "修改")
+				React.createElement("button", {type: "submit", onClick: this._handleEdit, className: (this.props.association.name ? "btn btn-success" : "btn btn-primary")}, (this.props.association.name ? "修改" : "新增"))
 			)
 		);
 	}
