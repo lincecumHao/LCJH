@@ -11,7 +11,6 @@ router.post('/student_upload', function(req, res, next) {
         if (err) {
             console.log(err);
         }
-        console.log(req.file.path);
         readStudentsList(req.file.path);
         res.json({
             id: 1

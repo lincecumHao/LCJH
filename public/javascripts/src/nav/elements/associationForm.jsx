@@ -14,6 +14,7 @@ var associationForm = React.createClass({
 	},
 
 	componentWillReceiveProps: function(nextProps) {
+		console.log(nextProps);
 		if(nextProps.association.name){
 			var association = nextProps.association;
 			this.setState({
@@ -47,7 +48,7 @@ var associationForm = React.createClass({
 
 	_handleMaxStudentCapChange: function(e){
 		this.setState({
-			maxStudentCap: e.target.value
+			maxStudentCap: parseInt(e.target.value)
 		});
 	},
 
@@ -64,11 +65,61 @@ var associationForm = React.createClass({
 	},
 
 	_handleEdit: function(e){
-		console.log(this.state);
+		$.ajax({
+			method: "PUT",
+			url: "associations/addAssociation",
+			data: this._createAssociation()
+		})
+		.done(function( msg ) {
+			this.props.update();
+			this._cleanState();
+		}.bind(this))
+		.fail(function() {
+			alert( "something went wrong, plz refresh the page" );
+		});
+
 		e.preventDefault();
 	},
 
+	_handleDelete: function(e){
+		e.preventDefault();
+		$.ajax({
+			method: "DELETE",
+			url: "associations/delAssociation",
+			data: this._createAssociation()
+		})
+		.done(function( msg ) {
+			this.props.update();
+			this._cleanState();
+		}.bind(this))
+		.fail(function() {
+			alert( "something went wrong, plz refresh the page" );
+		});
+	},
+
+	_createAssociation: function(){
+		return this.state;
+	},
+
+	_cleanState: function(){
+		this.setState({
+			name: "",
+			teacherName: "",
+			classRoom: "",
+			maxStudentCap: 0,
+			classRoomWhenRain: "",
+			common: ""
+		});
+	},
+
 	render: function() {
+		var delBtn;
+		if(this.props.association.name){
+			delBtn = <button type="submit" onClick={this._handleDelete} className="btn btn-danger">刪除</button>;
+		}else{
+			delBtn = '';
+		}
+
 		return (
 			<form>
 				<div className="form-group">
@@ -95,7 +146,8 @@ var associationForm = React.createClass({
 					<label>備註</label>
 					<textarea className="form-control" rows="3" value={this.state.common} onChange={this._handleCommonChange}></textarea>
 				</div>
-				<button type="submit" onClick={this._handleEdit} className={(this.props.association.name ? "btn btn-success" : "btn btn-primary")}>{(this.props.association.name ? "修改" : "新增")}</button>
+				<button type="submit" onClick={this._handleEdit} className="btn btn-primary">{(this.props.association.name ? "修改" : "新增")}</button>
+				{delBtn}
 			</form>
 		);
 	}

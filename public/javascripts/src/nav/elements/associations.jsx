@@ -16,11 +16,7 @@ var associations = React.createClass({
 	},
 
 	componentDidMount: function() {
-		$.get( "associations/getAllAssociation", function( data ) {
-			this.setState({
-				associations: this._sortById(data) 
-			});
-		}.bind(this));
+		this._updateAssociations();
 	},
 
 	_handleClick: function(selectedAssociation){
@@ -33,6 +29,15 @@ var associations = React.createClass({
 		return array.sort(function(after, before){
 			return parseInt(after.id) - parseInt(before.id);
 		});
+	},
+
+	_updateAssociations: function(){
+		$.get( "associations/getAllAssociation", function( data ) {
+			this.setState({
+				associations: this._sortById(data),
+				selectedAssociation: {}
+			});
+		}.bind(this));
 	},
 
 	render: function() {
@@ -66,7 +71,10 @@ var associations = React.createClass({
 							<p className="sub_title">詳細資訊</p>
 						</h3>
 						<div className="container-fluid as_table">
-							<AssociationForm association={this.state.selectedAssociation}/>
+							<AssociationForm 
+								association={this.state.selectedAssociation}
+								update={this._updateAssociations}
+							/>
 						</div>
 					</div>
 					<div className="associations background-imgs"></div>

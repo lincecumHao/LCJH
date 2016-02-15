@@ -29435,6 +29435,7 @@ var associationForm = React.createClass({displayName: "associationForm",
 	},
 
 	componentWillReceiveProps: function(nextProps) {
+		console.log(nextProps);
 		if(nextProps.association.name){
 			var association = nextProps.association;
 			this.setState({
@@ -29468,7 +29469,7 @@ var associationForm = React.createClass({displayName: "associationForm",
 
 	_handleMaxStudentCapChange: function(e){
 		this.setState({
-			maxStudentCap: e.target.value
+			maxStudentCap: parseInt(e.target.value)
 		});
 	},
 
@@ -29485,11 +29486,61 @@ var associationForm = React.createClass({displayName: "associationForm",
 	},
 
 	_handleEdit: function(e){
-		console.log(this.state);
+		$.ajax({
+			method: "PUT",
+			url: "associations/addAssociation",
+			data: this._createAssociation()
+		})
+		.done(function( msg ) {
+			this.props.update();
+			this._cleanState();
+		}.bind(this))
+		.fail(function() {
+			alert( "something went wrong, plz refresh the page" );
+		});
+
 		e.preventDefault();
 	},
 
+	_handleDelete: function(e){
+		e.preventDefault();
+		$.ajax({
+			method: "DELETE",
+			url: "associations/delAssociation",
+			data: this._createAssociation()
+		})
+		.done(function( msg ) {
+			this.props.update();
+			this._cleanState();
+		}.bind(this))
+		.fail(function() {
+			alert( "something went wrong, plz refresh the page" );
+		});
+	},
+
+	_createAssociation: function(){
+		return this.state;
+	},
+
+	_cleanState: function(){
+		this.setState({
+			name: "",
+			teacherName: "",
+			classRoom: "",
+			maxStudentCap: 0,
+			classRoomWhenRain: "",
+			common: ""
+		});
+	},
+
 	render: function() {
+		var delBtn;
+		if(this.props.association.name){
+			delBtn = React.createElement("button", {type: "submit", onClick: this._handleDelete, className: "btn btn-danger"}, "刪除");
+		}else{
+			delBtn = '';
+		}
+
 		return (
 			React.createElement("form", null, 
 				React.createElement("div", {className: "form-group"}, 
@@ -29516,7 +29567,8 @@ var associationForm = React.createClass({displayName: "associationForm",
 					React.createElement("label", null, "備註"), 
 					React.createElement("textarea", {className: "form-control", rows: "3", value: this.state.common, onChange: this._handleCommonChange})
 				), 
-				React.createElement("button", {type: "submit", onClick: this._handleEdit, className: (this.props.association.name ? "btn btn-success" : "btn btn-primary")}, (this.props.association.name ? "修改" : "新增"))
+				React.createElement("button", {type: "submit", onClick: this._handleEdit, className: "btn btn-primary"}, (this.props.association.name ? "修改" : "新增")), 
+				delBtn
 			)
 		);
 	}
@@ -29568,11 +29620,7 @@ var associations = React.createClass({displayName: "associations",
 	},
 
 	componentDidMount: function() {
-		$.get( "associations/getAllAssociation", function( data ) {
-			this.setState({
-				associations: this._sortById(data) 
-			});
-		}.bind(this));
+		this._updateAssociations();
 	},
 
 	_handleClick: function(selectedAssociation){
@@ -29585,6 +29633,15 @@ var associations = React.createClass({displayName: "associations",
 		return array.sort(function(after, before){
 			return parseInt(after.id) - parseInt(before.id);
 		});
+	},
+
+	_updateAssociations: function(){
+		$.get( "associations/getAllAssociation", function( data ) {
+			this.setState({
+				associations: this._sortById(data),
+				selectedAssociation: {}
+			});
+		}.bind(this));
 	},
 
 	render: function() {
@@ -29618,7 +29675,10 @@ var associations = React.createClass({displayName: "associations",
 							React.createElement("p", {className: "sub_title"}, "詳細資訊")
 						), 
 						React.createElement("div", {className: "container-fluid as_table"}, 
-							React.createElement(AssociationForm, {association: this.state.selectedAssociation})
+							React.createElement(AssociationForm, {
+								association: this.state.selectedAssociation, 
+								update: this._updateAssociations}
+							)
 						)
 					), 
 					React.createElement("div", {className: "associations background-imgs"})
