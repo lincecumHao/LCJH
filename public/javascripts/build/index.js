@@ -29731,8 +29731,29 @@ var Helpers = Scroll.Helpers;
 var result = React.createClass({displayName: "result",
 
 	render: function() {
+		var text;
+		var btn;
+		if(this.props.resultPath){
+			text = "成果下載"
+			btn = React.createElement("a", {href: this.props.resultPath, className: "btn btn-primary btn-lg"}, "下載")
+		}else{
+			text = "請先上傳學生清單"
+			btn = "";
+		}
+
+
 		return (
-			React.createElement("div", {id: "stu", className: "result background-imgs"})
+			React.createElement("div", {id: "stu", className: "no_padding"}, 
+				React.createElement("div", {className: "no_padding"}, 
+					React.createElement("div", {className: "student_upload_btn col-md-12"}, 
+						React.createElement("h3", null, 
+							React.createElement("p", {className: "sub_title"}, text)
+						), 
+						btn
+					), 
+					React.createElement("div", {className: "result background-imgs"})
+				)
+			)
 		);
 	}
 
@@ -29773,7 +29794,7 @@ var students = React.createClass({displayName: "students",
 		e.preventDefault();
 		
 		//ugly, TODO
-		$("html, body").animate({ scrollTop: $('#stu').offset().top }, 1000);
+		this.props.toResultElm();
 	},
 
 	_uploadFileSelected: function(e){
@@ -29796,7 +29817,7 @@ var students = React.createClass({displayName: "students",
 							React.createElement("div", {className: "form-group"}, 
 								React.createElement("input", {type: "file", "data-input": "false", className: "filestyle", name: "studentList", onChange: this._uploadFileSelected})
 							), 
-							React.createElement("button", {type: "submit", className: "btn btn-primary btn-lg"}, "上傳(*.csv)")
+							React.createElement("button", {type: "submit", className: "btn btn-primary btn-lg"}, "上傳")
 						)
 					), 
 					React.createElement("div", {className: "students background-imgs"})
@@ -29907,6 +29928,17 @@ var Events = Scroll.Events;
 
 var Index = React.createClass({displayName: "Index",
 
+	getInitialState: function() {
+		return {};
+	},
+
+	_toResultElm: function(){
+		$("html, body").animate({ scrollTop: $('#stu').offset().top }, 1000);
+		this.setState({
+			resultPath: "/result/分社團成果.xlsx"
+		});
+	},
+
 	render: function() {
 		return (
 			
@@ -29914,8 +29946,12 @@ var Index = React.createClass({displayName: "Index",
 				React.createElement(Nav, null), 
 				React.createElement(IndexElm, {name: "index"}), 
 				React.createElement(AssociationsElm, {name: "associations"}), 
-				React.createElement(StudentsElm, {name: "students"}), 
-				React.createElement(ResultElm, {name: "result"})
+				React.createElement(StudentsElm, {name: "students", 
+					toResultElm: this._toResultElm}
+				), 
+				React.createElement(ResultElm, {name: "result", 
+					resultPath: this.state.resultPath}
+				)
 			)
 		);
 	}

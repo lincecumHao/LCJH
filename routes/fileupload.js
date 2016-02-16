@@ -50,7 +50,7 @@ router.post('/student_upload', function(req, res, next) {
 });
 
 function writeOut(students){
-    xlsxWriter.write('result/mySpreadsheet.xlsx', students, function (err) {
+    xlsxWriter.write('result/分社團成果.xlsx', students, function (err) {
         if(err) console.log(err);
     });
 }

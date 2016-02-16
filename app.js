@@ -26,6 +26,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/bower_components', express.static(__dirname + '/bower_components'));
+app.use('/result', express.static(__dirname + '/result'));
 
 app.use('/associations', associations);
 app.use('/', routes);

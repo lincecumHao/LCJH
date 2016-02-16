@@ -29,7 +29,7 @@ var students = React.createClass({
 		e.preventDefault();
 		
 		//ugly, TODO
-		$("html, body").animate({ scrollTop: $('#stu').offset().top }, 1000);
+		this.props.toResultElm();
 	},
 
 	_uploadFileSelected: function(e){
@@ -52,7 +52,7 @@ var students = React.createClass({
 							<div className="form-group">
 								<input type="file" data-input="false" className="filestyle" name="studentList" onChange={this._uploadFileSelected} />
 							</div>
-							<button type="submit" className="btn btn-primary btn-lg">上傳(*.csv)</button>
+							<button type="submit" className="btn btn-primary btn-lg">上傳</button>
 						</form>
 					</div>
 					<div className="students background-imgs"></div>

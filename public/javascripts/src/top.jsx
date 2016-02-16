@@ -16,6 +16,17 @@ var Events = Scroll.Events;
 
 var Index = React.createClass({
 
+	getInitialState: function() {
+		return {};
+	},
+
+	_toResultElm: function(){
+		$("html, body").animate({ scrollTop: $('#stu').offset().top }, 1000);
+		this.setState({
+			resultPath: "/result/分社團成果.xlsx"
+		});
+	},
+
 	render: function() {
 		return (
 			
@@ -23,8 +34,12 @@ var Index = React.createClass({
 				<Nav />
 				<IndexElm name="index"/>
 				<AssociationsElm name="associations"/>
-				<StudentsElm name="students"/>
-				<ResultElm name="result"/>
+				<StudentsElm name="students" 
+					toResultElm = {this._toResultElm}
+				/>
+				<ResultElm name="result" 
+					resultPath = {this.state.resultPath}
+				/>
 			</div>
 		);
 	}
