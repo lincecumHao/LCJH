@@ -11347,6 +11347,8 @@ var Helpers = {
 
       handleClick: function(event) {
 
+        //console.log(event)
+
         /*
          * give the posibility to override onClick
          */
@@ -11680,6 +11682,12 @@ module.exports = {
   },
 
   scrollTo: function(to, animate, duration, offset) {
+
+    // console.log(__mapped);
+    // console.log(to);
+    // console.log(animate);
+    // console.log(duration);
+    // console.log(offset);
 
      /*
      * get the mapped DOM element
@@ -29435,7 +29443,6 @@ var associationForm = React.createClass({displayName: "associationForm",
 	},
 
 	componentWillReceiveProps: function(nextProps) {
-		console.log(nextProps);
 		if(nextProps.association.name){
 			var association = nextProps.association;
 			this.setState({
@@ -29725,7 +29732,7 @@ var result = React.createClass({displayName: "result",
 
 	render: function() {
 		return (
-			React.createElement("div", {className: "result background-imgs"})
+			React.createElement("div", {id: "stu", className: "result background-imgs"})
 		);
 	}
 
@@ -29764,9 +29771,9 @@ var students = React.createClass({displayName: "students",
 		    console.log(response);
 		});
 		e.preventDefault();
-		// $.post("./students/student_upload", d, function(data){
-		// 	console.log(data);
-		// }.bind(this));
+		
+		//ugly, TODO
+		$("html, body").animate({ scrollTop: $('#stu').offset().top }, 1000);
 	},
 
 	_uploadFileSelected: function(e){
@@ -29833,10 +29840,6 @@ var Nav = React.createClass({displayName: "Nav",
 		};
 	},
 
-	componentWillMount: function() {
-		//this._updateUlHeight();
-	},
-
 	componentDidMount: function() {
 		window.addEventListener("resize", this._updateUlHeight);
 		this._updateUlHeight();
@@ -29858,6 +29861,8 @@ var Nav = React.createClass({displayName: "Nav",
 		});
 	},
 
+	//$("html, body").animate({ scrollTop: $('#stu').offset().top }, 1000);
+
 	render: function() {
 		return (
 			React.createElement("div", {id: "nav", className: "nav"}, 
@@ -29872,7 +29877,7 @@ var Nav = React.createClass({displayName: "Nav",
 						React.createElement(Link, {activeClass: "active", to: "students", spy: true, smooth: true, duration: 500}, "學生")
 					), 
 					React.createElement("li", null, 
-						React.createElement(Link, {activeClass: "active", to: "result", spy: true, smooth: true, duration: 500}, "成果")
+						React.createElement(Link, {ref: "result", activeClass: "active", to: "result", spy: true, smooth: true, duration: 500, onClick: this._test}, "成果")
 					)
 				)
 			)
@@ -29901,21 +29906,6 @@ var Events = Scroll.Events;
 
 
 var Index = React.createClass({displayName: "Index",
-
-	componentDidMount: function() {
-		 Events.scrollEvent.register('begin', function(to, element) {
-			console.log("begin", arguments);
-		});
-		 
-		Events.scrollEvent.register('end', function(to, element) {
-			console.log("end", arguments);
-		});
-	},
-
-	componentWillUnmount: function() {
-		Events.scrollEvent.remove('begin');
-		Events.scrollEvent.remove('end');
-	},
 
 	render: function() {
 		return (

@@ -27,9 +27,9 @@ var students = React.createClass({
 		    console.log(response);
 		});
 		e.preventDefault();
-		// $.post("./students/student_upload", d, function(data){
-		// 	console.log(data);
-		// }.bind(this));
+		
+		//ugly, TODO
+		$("html, body").animate({ scrollTop: $('#stu').offset().top }, 1000);
 	},
 
 	_uploadFileSelected: function(e){

@@ -13,9 +13,14 @@ var association = new Schema({
 }, { collection: 'Associations' });
 
 var student = new Schema({
-    "id": String,
-    "name": String,
-    "volunteer_program": Array
+    "班級": String,
+    "座號": String,
+    "姓名": String,
+    "第一志願": String,
+    "第二志願": String,
+    "第三志願": String,
+    "第四志願": String,
+    "第五志願": String
 }, { collection: 'Student' });
 
 mongoose.model( 'Association', association );

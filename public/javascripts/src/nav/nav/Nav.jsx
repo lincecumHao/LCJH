@@ -13,10 +13,6 @@ var Nav = React.createClass({
 		};
 	},
 
-	componentWillMount: function() {
-		//this._updateUlHeight();
-	},
-
 	componentDidMount: function() {
 		window.addEventListener("resize", this._updateUlHeight);
 		this._updateUlHeight();
@@ -38,6 +34,8 @@ var Nav = React.createClass({
 		});
 	},
 
+	//$("html, body").animate({ scrollTop: $('#stu').offset().top }, 1000);
+
 	render: function() {
 		return (
 			<div id="nav" className="nav" >
@@ -52,7 +50,7 @@ var Nav = React.createClass({
 						<Link activeClass="active" to="students" spy={true} smooth={true} duration={500}>學生</Link>
 					</li>
 					<li>
-						<Link activeClass="active" to="result" spy={true} smooth={true} duration={500}>成果</Link>
+						<Link ref="result" activeClass="active" to="result" spy={true} smooth={true} duration={500} onClick={this._test}>成果</Link>
 					</li>
 				</ul>
 			</div>

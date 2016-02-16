@@ -16,21 +16,6 @@ var Events = Scroll.Events;
 
 var Index = React.createClass({
 
-	componentDidMount: function() {
-		 Events.scrollEvent.register('begin', function(to, element) {
-			console.log("begin", arguments);
-		});
-		 
-		Events.scrollEvent.register('end', function(to, element) {
-			console.log("end", arguments);
-		});
-	},
-
-	componentWillUnmount: function() {
-		Events.scrollEvent.remove('begin');
-		Events.scrollEvent.remove('end');
-	},
-
 	render: function() {
 		return (
 			

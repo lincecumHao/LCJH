@@ -14,7 +14,6 @@ var associationForm = React.createClass({
 	},
 
 	componentWillReceiveProps: function(nextProps) {
-		console.log(nextProps);
 		if(nextProps.association.name){
 			var association = nextProps.association;
 			this.setState({

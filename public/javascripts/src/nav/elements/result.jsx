@@ -6,7 +6,7 @@ var result = React.createClass({
 
 	render: function() {
 		return (
-			<div className="result background-imgs"/>
+			<div id="stu" className="result background-imgs"/>
 		);
 	}
 
