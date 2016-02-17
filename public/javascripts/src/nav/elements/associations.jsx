@@ -8,6 +8,10 @@ var AssociationForm = require('./associationForm.jsx');
 
 var associations = React.createClass({
 
+	_test: function(){
+
+	},
+	
 	getInitialState: function() {
 		return {
 			associations: [],
