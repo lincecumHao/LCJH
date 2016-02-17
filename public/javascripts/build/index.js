@@ -29499,6 +29499,7 @@ var associationForm = React.createClass({displayName: "associationForm",
 			data: this._createAssociation()
 		})
 		.done(function( msg ) {
+			console.log(msg);
 			this.props.update();
 			this._cleanState();
 		}.bind(this))
@@ -29622,7 +29623,7 @@ var associations = React.createClass({displayName: "associations",
 	_test: function(){
 
 	},
-	
+
 	getInitialState: function() {
 		return {
 			associations: [],
@@ -29647,6 +29648,7 @@ var associations = React.createClass({displayName: "associations",
 	},
 
 	_updateAssociations: function(){
+		console.log("update");
 		$.get( "associations/getAllAssociation", function( data ) {
 			this.setState({
 				associations: this._sortById(data),
@@ -29737,9 +29739,13 @@ var result = React.createClass({displayName: "result",
 	render: function() {
 		var text;
 		var btn;
+		var unFullAssocationTxt;
+		var unFullAssocationBtn;
 		if(this.props.resultPath){
-			text = "成果下載"
+			text = "成果下載";
 			btn = React.createElement("a", {href: this.props.resultPath, className: "btn btn-primary btn-lg"}, "下載")
+			unFullAssocationTxt = "尚未滿員社團清單";
+			unFullAssocationBtn = React.createElement("a", {href: this.props.unFullAssocationPath, className: "btn btn-primary btn-lg"}, "下載")
 		}else{
 			text = "請先上傳學生清單"
 			btn = "";
@@ -29753,7 +29759,11 @@ var result = React.createClass({displayName: "result",
 						React.createElement("h3", null, 
 							React.createElement("p", {className: "sub_title"}, text)
 						), 
-						btn
+						btn, 
+						React.createElement("h3", null, 
+							React.createElement("p", {className: "sub_title"}, unFullAssocationTxt)
+						), 
+						unFullAssocationBtn
 					), 
 					React.createElement("div", {className: "result background-imgs"})
 				)
@@ -29784,7 +29794,6 @@ var students = React.createClass({displayName: "students",
 	_handelSubmit: function(e){
 		var data = new FormData();
 		data.append("studentList", this.state.uploadfile);
-		console.log(data);
 		$.ajax({
 		    url : "./students/student_upload",
 		    type: 'POST',
@@ -29793,17 +29802,13 @@ var students = React.createClass({displayName: "students",
 		    processData: false,
         	contentType: false,
 		}).done(function(response) {
-		    console.log(response);
-		});
+		    this.props.toResultElm();
+		}.bind(this));
 		e.preventDefault();
-		
-		//ugly, TODO
-		this.props.toResultElm();
 	},
 
 	_uploadFileSelected: function(e){
 		// console.log();
-		console.log(e.target.files[0]);
 		this.setState({
 			uploadfile: e.target.files[0]
 		});
@@ -29939,7 +29944,8 @@ var Index = React.createClass({displayName: "Index",
 	_toResultElm: function(){
 		$("html, body").animate({ scrollTop: $('#stu').offset().top }, 1000);
 		this.setState({
-			resultPath: "/result/分社團成果.xlsx"
+			resultPath: "/result/result.xlsx",
+			unFullAssocationPath: "/result/unFullAssociation.xlsx"
 		});
 	},
 
@@ -29954,7 +29960,8 @@ var Index = React.createClass({displayName: "Index",
 					toResultElm: this._toResultElm}
 				), 
 				React.createElement(ResultElm, {name: "result", 
-					resultPath: this.state.resultPath}
+					resultPath: this.state.resultPath, 
+					unFullAssocationPath: this.state.unFullAssocationPath}
 				)
 			)
 		);

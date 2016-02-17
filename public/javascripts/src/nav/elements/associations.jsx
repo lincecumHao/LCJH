@@ -11,7 +11,7 @@ var associations = React.createClass({
 	_test: function(){
 
 	},
-	
+
 	getInitialState: function() {
 		return {
 			associations: [],
@@ -36,6 +36,7 @@ var associations = React.createClass({
 	},
 
 	_updateAssociations: function(){
+		console.log("update");
 		$.get( "associations/getAllAssociation", function( data ) {
 			this.setState({
 				associations: this._sortById(data),

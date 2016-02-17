@@ -70,6 +70,7 @@ var associationForm = React.createClass({
 			data: this._createAssociation()
 		})
 		.done(function( msg ) {
+			console.log(msg);
 			this.props.update();
 			this._cleanState();
 		}.bind(this))

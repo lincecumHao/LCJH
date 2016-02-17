@@ -3,7 +3,7 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var association = mongoose.model('Association');
 
-var associationList;
+var associationList = [];
 
 router.get('/getAllAssociation', function(req, res, next) {
     association.find({available: true}, function(err, association){
@@ -13,31 +13,37 @@ router.get('/getAllAssociation', function(req, res, next) {
 });
 
 router.put('/addAssociation', function(req, res, next) {
-    var association = createAssociation(req.body);
+    
     var status = 1;
-    association.save(function(err, association){
-    	if(err){
-    		console.log(err);
-    		stauts = 0;
-    		return;	
-    	} 
-    	associationList.push(association);
-    });
-    res.json({
-    	status: status
-	});
+    association.update(
+        {name: req.body.name},
+        { $set:req.body},
+        function(err, result){
+            if(err){
+                status = 0;
+                console.log(err);
+            }else if(result.nModified == 0){
+                var newAssociation = createAssociation(req.body);
+                newAssociation.save(function(err, association){
+                    if(err){
+                        console.log(err);
+                        stauts = 0;
+                    }
+                    res.send("OK");
+                });
+            }else{
+                res.send("OK");
+            }
+        }
+    );
 });
 
 router.delete('/delAssociation', function(req, res, next) {
-    console.log(req.body);
-    console.log("delete");
     var status = 1;
     association.find({ name:req.body.name }).remove(function(err){
     	if(err){
-    		console.log(err);
     		return;
     	}
-    	console.log("success delete");
     });
     res.json({
     	status: status

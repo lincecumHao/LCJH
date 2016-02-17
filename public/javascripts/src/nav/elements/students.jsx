@@ -15,7 +15,6 @@ var students = React.createClass({
 	_handelSubmit: function(e){
 		var data = new FormData();
 		data.append("studentList", this.state.uploadfile);
-		console.log(data);
 		$.ajax({
 		    url : "./students/student_upload",
 		    type: 'POST',
@@ -24,17 +23,13 @@ var students = React.createClass({
 		    processData: false,
         	contentType: false,
 		}).done(function(response) {
-		    console.log(response);
-		});
+		    this.props.toResultElm();
+		}.bind(this));
 		e.preventDefault();
-		
-		//ugly, TODO
-		this.props.toResultElm();
 	},
 
 	_uploadFileSelected: function(e){
 		// console.log();
-		console.log(e.target.files[0]);
 		this.setState({
 			uploadfile: e.target.files[0]
 		});
