@@ -86,7 +86,7 @@ function checkResult(students, associations){
     console.log('unResultStudents: ' + unResultStudents.length );
 
     writeOut(students, 'result.xlsx');
-    resp.send("OK");
+    resp.json(students);
 }
 
 function generateResult(students) {
