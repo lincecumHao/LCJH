@@ -20,11 +20,11 @@ var Index = React.createClass({
 		return {};
 	},
 
-	_toResultElm: function(){
+	_toResultElm: function(resData){
 		$("html, body").animate({ scrollTop: $('#stu').offset().top }, 1000);
 		this.setState({
-			resultPath: "/result/result.xlsx",
-			unFullAssocationPath: "/result/unFullAssociation.xlsx"
+			studentResult: resData.studentResult,
+			unFullAssocationResult: resData.unFullAssocationResult
 		});
 	},
 
@@ -39,8 +39,8 @@ var Index = React.createClass({
 					toResultElm = {this._toResultElm}
 				/>
 				<ResultElm name="result" 
-					resultPath = {this.state.resultPath}
-					unFullAssocationPath = {this.state.unFullAssocationPath}
+					studentResult = {this.state.studentResult}
+					unFullAssocationResult = {this.state.unFullAssocationResult}
 				/>
 			</div>
 		);

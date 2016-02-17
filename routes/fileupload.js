@@ -70,23 +70,24 @@ function checkResult(students, associations){
             unResultStudents.push(elm);
         }
     });
-    if(unResultStudents.length > 0){
-        var unFullAssociation = [];
-        associations.forEach(function(elm){
-            if(!isAssociationFull(elm)){
-                unFullAssociation.push(generateReadableAssociation(elm));
-            }
-        });
-        writeOut(unFullAssociation, 'unFullAssociation.xlsx');
+    
+    var unFullAssociation = [];
+    associations.forEach(function(elm){
+        if(!isAssociationFull(elm)){
+            unFullAssociation.push(generateReadableAssociation(elm));
+        }
+    });
+    // writeOut(unFullAssociation, 'unFullAssociation.xlsx');
 
-        console.log('unFullAssociation: ' + unFullAssociation.length );
-        // unFullAssociation.push(unFullAssociation);
-
-    }
+    console.log('unFullAssociation: ' + unFullAssociation.length );
     console.log('unResultStudents: ' + unResultStudents.length );
 
-    writeOut(students, 'result.xlsx');
-    resp.json(students);
+    // writeOut(students, 'result.xlsx');
+
+    resp.json({
+        studentResult: students,
+        unFullAssocationResult: unFullAssociation
+    });
 }
 
 function generateResult(students) {
